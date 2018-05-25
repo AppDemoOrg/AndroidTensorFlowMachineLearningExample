@@ -14,16 +14,12 @@
  *    limitations under the License.
  */
 
-package com.mindorks.tensorflowexample;
+package com.mindorks.tensorflow;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 
 import java.util.List;
-
-/**
- * Created by amitshekhar on 06/03/17.
- */
 
 /**
  * Generic interface for interacting with different recognition engines.

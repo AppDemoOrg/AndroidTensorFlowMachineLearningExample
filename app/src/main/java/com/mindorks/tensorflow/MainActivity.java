@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mindorks.tensorflowexample;
+package com.mindorks.tensorflow;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -36,84 +36,52 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class MainActivity extends AppCompatActivity implements CameraKitEventListener {
 
     private static final int INPUT_SIZE = 224;
     private static final int IMAGE_MEAN = 117;
     private static final float IMAGE_STD = 1;
+
     private static final String INPUT_NAME = "input";
     private static final String OUTPUT_NAME = "output";
-
     private static final String MODEL_FILE = "file:///android_asset/tensorflow_inception_graph.pb";
-    private static final String LABEL_FILE =
-            "file:///android_asset/imagenet_comp_graph_label_strings.txt";
+    private static final String LABEL_FILE = "file:///android_asset/imagenet_comp_graph_label_strings.txt";
 
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
-    private TextView textViewResult;
-    private Button btnDetectObject, btnToggleCamera;
-    private ImageView imageViewResult;
-    private CameraView cameraView;
+
+    @BindView(R.id.textViewResult)
+    TextView textViewResult;
+
+    @BindView(R.id.imageViewResult)
+    ImageView imageViewResult;
+
+    @BindView(R.id.cameraView)
+    CameraView cameraView;
+
+    @BindView(R.id.btnDetectObject)
+    Button btnDetectObject;
+
+    @OnClick(R.id.btnToggleCamera) void cameraOnClick() {
+        cameraView.toggleFacing();
+    }
+
+    @OnClick(R.id.btnDetectObject) void detectOnClick() {
+        cameraView.captureImage();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cameraView = (CameraView) findViewById(R.id.cameraView);
-        imageViewResult = (ImageView) findViewById(R.id.imageViewResult);
-        textViewResult = (TextView) findViewById(R.id.textViewResult);
-        textViewResult.setMovementMethod(new ScrollingMovementMethod());
-
-        btnToggleCamera = (Button) findViewById(R.id.btnToggleCamera);
-        btnDetectObject = (Button) findViewById(R.id.btnDetectObject);
-
-        cameraView.addCameraKitListener(new CameraKitEventListener() {
-            @Override
-            public void onEvent(CameraKitEvent cameraKitEvent) {
-
-            }
-
-            @Override
-            public void onError(CameraKitError cameraKitError) {
-
-            }
-
-            @Override
-            public void onImage(CameraKitImage cameraKitImage) {
-
-                Bitmap bitmap = cameraKitImage.getBitmap();
-
-                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
-
-                imageViewResult.setImageBitmap(bitmap);
-
-                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-
-                textViewResult.setText(results.toString());
-
-            }
-
-            @Override
-            public void onVideo(CameraKitVideo cameraKitVideo) {
-
-            }
-        });
-
-        btnToggleCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cameraView.toggleFacing();
-            }
-        });
-
-        btnDetectObject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cameraView.captureImage();
-            }
-        });
-
         initTensorFlowAndLoadModel();
+        ButterKnife.bind(this);
+        textViewResult.setMovementMethod(new ScrollingMovementMethod());
+        cameraView.addCameraKitListener(this);
     }
 
     @Override
@@ -139,12 +107,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onEvent(CameraKitEvent cameraKitEvent) {
+
+    }
+
+    @Override
+    public void onError(CameraKitError cameraKitError) {
+
+    }
+
+    @Override
+    public void onImage(CameraKitImage cameraKitImage) {
+        Bitmap bitmap = cameraKitImage.getBitmap();
+        bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+        imageViewResult.setImageBitmap(bitmap);
+        final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+        textViewResult.setText(results.toString());
+    }
+
+    @Override
+    public void onVideo(CameraKitVideo cameraKitVideo) {
+
+    }
+
     private void initTensorFlowAndLoadModel() {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    classifier = TensorFlowImageClassifier.create(
+                    classifier = ImageClassifier.create(
                             getAssets(),
                             MODEL_FILE,
                             LABEL_FILE,

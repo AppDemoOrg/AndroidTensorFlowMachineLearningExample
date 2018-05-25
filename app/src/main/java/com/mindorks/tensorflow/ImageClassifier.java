@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mindorks.tensorflowexample;
+package com.mindorks.tensorflow;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -33,13 +33,9 @@ import java.util.PriorityQueue;
 import java.util.Vector;
 
 /**
- * Created by amitshekhar on 06/03/17.
- */
-
-/**
  * A classifier specialized to label images using TensorFlow.
  */
-public class TensorFlowImageClassifier implements Classifier {
+public class ImageClassifier implements Classifier {
 
     private static final String TAG = "ImageClassifier";
 
@@ -65,7 +61,7 @@ public class TensorFlowImageClassifier implements Classifier {
 
     private boolean runStats = false;
 
-    private TensorFlowImageClassifier() {
+    private ImageClassifier() {
     }
 
     /**
@@ -91,7 +87,7 @@ public class TensorFlowImageClassifier implements Classifier {
             String inputName,
             String outputName)
             throws IOException {
-        TensorFlowImageClassifier c = new TensorFlowImageClassifier();
+        ImageClassifier c = new ImageClassifier();
         c.inputName = inputName;
         c.outputName = outputName;
 

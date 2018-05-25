@@ -13,9 +13,8 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <resources>
-    <string name="app_name">AndroidTensorFlowMachineLearningExample</string>
+    <string name="app_name">TensorFlowSample</string>
     <string name="toggle_camera">Toggle Camera</string>
     <string name="detect_object">Detect Object</string>
 </resources>
