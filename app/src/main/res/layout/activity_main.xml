@@ -23,7 +23,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mindorks.tensorflowexample.com.mindorks.tensorflow.MainActivity">
+    tools:context="com.mindorks.tensorflow.MainActivity">
 
     <com.wonderkiln.camerakit.CameraView
         android:id="@+id/cameraView"
@@ -31,12 +31,11 @@
         android:layout_height="300dp"
         android:layout_gravity="center|top" />
 
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="80dp"
         android:layout_gravity="center|top"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="320dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -55,25 +54,24 @@
             android:scrollbars="vertical"
             android:gravity="center"
             android:textColor="@android:color/black" />
-
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btnToggleCamera"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="70dp"
         android:text="@string/toggle_camera"
         android:textAllCaps="false"
         android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/btnDetectObject"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_gravity="bottom|center"
+        android:layout_marginBottom="10dp"
         android:text="@string/detect_object"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
